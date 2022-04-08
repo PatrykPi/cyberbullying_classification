@@ -47,7 +47,7 @@ def assemble():
     bag_of_words = vect.transform(data_df['clean_tweets'])
 
     X_train, X_test, y_train, y_test = train_test_split(bag_of_words, data_df['cyberbullying_type'])
-    logreg = LogisticRegression(max_iter=300, C=100)
+    logreg = LogisticRegression(max_iter=300, C=0.25)
     logreg.fit(X_train, y_train)
 
     print(X_test[0])
