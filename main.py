@@ -4,7 +4,7 @@ import pandas as pd
 import spacy
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from wordcloud import STOPWORDS
 
 from preprocessing import clean_tweets_efficient
@@ -47,7 +47,7 @@ def assemble():
     bag_of_words = vect.transform(data_df['clean_tweets'])
 
     X_train, X_test, y_train, y_test = train_test_split(bag_of_words, data_df['cyberbullying_type'])
-    logreg = LogisticRegression(max_iter=300)
+    logreg = LogisticRegression(max_iter=300, C=100)
     logreg.fit(X_train, y_train)
 
     print(X_test[0])
@@ -59,6 +59,12 @@ def assemble():
     # scores = cross_val_score(LogisticRegression(max_iter=300), bag_of_words, data_df['cyberbullying_type'], cv=2)
     # print("Średnia dokładność walidacji krzyżowej: ")
     # print(scores)
+
+    # param_grid = {'C': [0.25, 0.275, 0.3, 0.325, 0.35, 0.375, 0.4, 0.425, 0.45, 0.475, 0.5]}
+    # grid = GridSearchCV(LogisticRegression(max_iter=300), param_grid, cv=2)
+    # grid.fit(X_train, y_train)
+    # print("Najlepszy wynik walidacji krzyżowej: {:.2f}".format(grid.best_score_))
+    # print("Najlepsze parametry: ", grid.best_params_)
 
     # gender_1 = pd.DataFrame(data_df['clean_tweets'], columns=['Text', 'count'])
     # gender_1.groupby('Text').sum()['count'].sort_values(ascending=True).iplot(
